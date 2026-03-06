@@ -1,43 +1,19 @@
-# Quasar App (frontchallengedatapage)
+Sistema de Veículos (Front-End)
+Descrição
 
-Projeto teste técnico fullstack
+Front-end do Sistema de Veículos, desenvolvido com Vue 3 e Quasar Framework.
+Permite cadastrar, editar, excluir e visualizar veículos, além de apresentar cards e tabelas dinâmicas com detalhes de cada veículo.
 
-## Install the dependencies
+O projeto é modular, utilizando componentes reutilizáveis, Pinia para gerenciamento de estado e integrações com backend via API.
 
-```bash
-yarn
-# or
-npm install
-```
+Tecnologias
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+Vue 3
 
-```bash
-quasar dev
-```
+Quasar Framework
 
-### Lint the files
+Pinia
 
-```bash
-yarn lint
-# or
-npm run lint
-```
+TypeScript
 
-### Format the files
-
-```bash
-yarn format
-# or
-npm run format
-```
-
-### Build the app for production
-
-```bash
-quasar build
-```
-
-### Customize the configuration
-
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+HTML5 / CSS3
