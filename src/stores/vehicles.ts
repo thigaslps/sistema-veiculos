@@ -21,7 +21,6 @@ export const useVehiclesStore = defineStore('vehicles', () => {
   const vehicles = ref<Vehicle[]>([]);
   const loading = ref(false);
   const search = ref('');
-
   const filteredVehicles = computed(() =>
     vehicles.value.filter(
       (v) =>
@@ -44,6 +43,9 @@ export const useVehiclesStore = defineStore('vehicles', () => {
           type: 'negative',
           message: data.message || 'Erro ao buscar veículos',
         });
+        if (data?.status === 'token error') {
+          window.location.reload();
+        }
         return;
       }
       vehicles.value = data.res || [];
@@ -83,6 +85,9 @@ export const useVehiclesStore = defineStore('vehicles', () => {
           message:
             data.message || (isEdit ? 'Erro ao atualizar veículo' : 'Erro ao adicionar veículo'),
         });
+        if (data?.status === 'token error') {
+          window.location.reload();
+        }
         return false;
       }
 
@@ -125,8 +130,16 @@ export const useVehiclesStore = defineStore('vehicles', () => {
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
       });
+      const data = await response.json();
 
       if (!response.ok) {
+        Notify.create({
+          type: 'negative',
+          message: data.message || 'Erro ao excluir veículo',
+        });
+        if (data?.status === 'token error') {
+          window.location.reload();
+        }
         return false;
       }
 
@@ -160,12 +173,15 @@ export const useVehiclesStore = defineStore('vehicles', () => {
           credentials: 'include',
         },
       );
-
+      const data = await response.json();
       if (!response.ok) {
         Notify.create({
           type: 'negative',
-          message: 'Erro ao remover imagem',
+          message: data.message || 'Erro ao remover imagem',
         });
+        if (data?.status === 'token error') {
+          window.location.reload();
+        }
         return false;
       }
 

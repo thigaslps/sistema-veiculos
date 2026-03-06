@@ -23,7 +23,13 @@
 
         <q-input v-model="form.year" label="Ano" type="number" class="q-mt-sm" />
 
-        <q-input v-model="form.plate" label="Placa" class="q-mt-sm" />
+        <q-input
+          :model-value="form.plate"
+          label="Placa"
+          class="q-mt-sm"
+          maxlength="8"
+          @update:model-value="formatPlate"
+        />
 
         <q-input v-model="form.color" label="Cor" class="q-mt-sm" />
 
@@ -89,6 +95,18 @@ const innerValue = computed({
   get: () => props.modelValue,
   set: (val) => emit('update:modelValue', val),
 });
+
+function formatPlate(val: string | number | null) {
+  if (!val) return;
+  let cleaned = String(val)
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, '');
+  cleaned = cleaned.slice(0, 7);
+  if (cleaned.length > 3) {
+    cleaned = cleaned.slice(0, 3) + '-' + cleaned.slice(3);
+  }
+  form.value.plate = cleaned;
+}
 
 const isEdit = computed(() => !!props.vehicle?.id);
 
