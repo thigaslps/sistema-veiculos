@@ -3,18 +3,19 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
-
-        <q-toolbar-title> Quasar App </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <q-toolbar-title> Sistema de carros</q-toolbar-title>
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
-
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
+        <SidebarLink
+          v-for="link in linksList"
+          :key="link.title"
+          v-bind="link"
+          :active-link="activeLink"
+          @select="changeRoute"
+        />
       </q-list>
     </q-drawer>
 
@@ -26,52 +27,45 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import EssentialLink, { type EssentialLinkProps } from 'components/EssentialLink.vue';
-
-const linksList: EssentialLinkProps[] = [
+import { useRouter } from 'vue-router';
+import { useAuthStore } from 'src/stores/auth';
+import SidebarLink, { type SidebarLinkProps } from 'components/SidebarLink.vue';
+const useStore = useAuthStore();
+import { Notify } from 'quasar';
+const router = useRouter();
+const linksList: Omit<SidebarLinkProps, 'activeLink'>[] = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev',
+    title: 'Página inicial',
+    caption: 'Página inicial do sistema',
+    icon: 'home',
+    link: '/admin/dashboard',
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
+    title: 'Catálogo',
+    caption: 'Página de catálogo de carros',
+    icon: 'directions_car',
+    link: '/admin/vehicles',
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev',
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev',
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev',
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev',
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev',
+    title: 'Sair',
+    caption: 'Encerrar sessão do sistema',
+    icon: 'logout',
+    link: '/',
   },
 ];
+const activeLink = ref('/home');
+
+async function changeRoute(route: string) {
+  if (route === '/') {
+    await useStore.logout();
+    Notify.create({
+      type: 'negative',
+      message: 'Sessão encerrada. Redirecionando...',
+    });
+  }
+  activeLink.value = route;
+  await router.push(route);
+}
 
 const leftDrawerOpen = ref(false);
 
