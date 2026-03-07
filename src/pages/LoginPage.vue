@@ -108,11 +108,10 @@ const handleSubmit = async () => {
   try {
     if (actualTab.value === 'login') {
       await authStore.login({ email: email.value, password: password.value });
+      await router.push('/admin/dashboard');
     } else {
       await authStore.register({ email: email.value, password: password.value });
     }
-
-    await router.push('/admin/dashboard');
   } catch (error: unknown) {
     console.error('Erro ao fazer login/registro:', error);
     if (error instanceof Error) {

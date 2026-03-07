@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { Notify } from 'quasar';
 import { ref } from 'vue';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -45,6 +46,10 @@ export const useAuthStore = defineStore('auth', () => {
       if (!response.ok) {
         throw new Error(data.message || 'Erro ao registrar');
       }
+      Notify.create({
+        type: 'positive',
+        message: data.message || 'Registro realizado com sucesso!',
+      });
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new Error(error.message);
