@@ -95,10 +95,20 @@ export const useVehiclesStore = defineStore('vehicles', () => {
         const index = vehicles.value.findIndex((v) => v.id === id);
         if (index !== -1) {
           const existingVehicle = vehicles.value[index];
+          const sameImages =
+            existingVehicle?.photos.length === data.res.photos.length &&
+            existingVehicle?.photos.every((item, index) => item === data.res.photos[index]);
+          let newPhotos: string[] = [];
+          if (!sameImages) {
+            newPhotos = [...(existingVehicle?.photos || []), ...(data.res.photos || [])];
+          } else {
+            newPhotos = [...(existingVehicle?.photos || [])];
+          }
+
           vehicles.value[index] = {
             ...existingVehicle,
             ...data.res,
-            photos: [...(existingVehicle?.photos || []), ...(data.res.photos || [])],
+            photos: newPhotos,
           };
         }
       } else {

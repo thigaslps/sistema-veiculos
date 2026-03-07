@@ -78,7 +78,7 @@
         <!-- Carrossel de fotos -->
         <q-card-section
           class="col q-pa-none"
-          style="height: 50%; display: flex; justify-content: center; align-items: center"
+          style="height: 70%; display: flex; justify-content: center; align-items: center"
         >
           <q-carousel
             v-model="currentSlide"
@@ -101,12 +101,31 @@
 
         <!-- Detalhes -->
         <q-card-section>
-          <div><strong style="font-weight: 400">Ano:</strong> {{ currentVehicle?.year }}</div>
-          <div><strong style="font-weight: 400">Placa:</strong> {{ currentVehicle?.plate }}</div>
-          <div><strong style="font-weight: 400">Cor:</strong> {{ currentVehicle?.color }}</div>
-          <div><strong style="font-weight: 400">Valor:</strong> {{ currentVehicle?.value }}</div>
-          <div><strong style="font-weight: 400">Tipo:</strong> {{ currentVehicle?.type }}</div>
-          <div><strong style="font-weight: 400">Status:</strong> {{ currentVehicle?.status }}</div>
+          <div class="vehicle-info">
+            <q-chip icon="event" color="primary" text-color="white">
+              Ano: {{ currentVehicle?.year }}
+            </q-chip>
+
+            <q-chip icon="credit_card" color="primary" text-color="white">
+              Placa: {{ currentVehicle?.plate }}
+            </q-chip>
+
+            <q-chip icon="palette" color="primary" text-color="white">
+              Cor: {{ currentVehicle?.color }}
+            </q-chip>
+
+            <q-chip icon="attach_money" color="primary" text-color="white">
+              Valor: {{ currentVehicle?.value }}
+            </q-chip>
+
+            <q-chip icon="category" color="primary" text-color="white">
+              Tipo: {{ currentVehicle?.type }}
+            </q-chip>
+
+            <q-chip icon="info" color="primary" text-color="white">
+              Status: {{ currentVehicle?.status }}
+            </q-chip>
+          </div>
         </q-card-section>
 
         <!-- Ações -->
@@ -132,8 +151,7 @@ const emit = defineEmits<{
   (e: 'edit', vehicle: Vehicle | null): void;
 }>();
 
-// Modal
-const modalVisible = ref(false);
+const modalVisible = ref<boolean>(false);
 const currentVehicle = ref<Vehicle | null>(null);
 const currentSlide = ref('0');
 
@@ -171,5 +189,13 @@ function editVehicle(vehicle: Vehicle | null) {
 }
 .q-card:hover {
   transform: scale(1.02);
+}
+
+.vehicle-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 </style>
