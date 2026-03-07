@@ -1,10 +1,14 @@
 <template>
-  <q-page padding>
-    {{
+  <span class="" style="font-size: 12px"
+    >{{
       vehicles.length === 0
         ? 'Nenhum veículo encontrado'
-        : `${vehicles.length} veículos encontrados`
+        : vehicles.length === 1
+          ? '1 veículo encontrado'
+          : `${vehicles.length} veículos encontrados`
     }}
+  </span>
+  <q-page padding>
     <!-- Grid de cards -->
     <div class="" style="display: flex; flex-wrap: wrap; gap: 2rem">
       <q-card
@@ -23,13 +27,13 @@
         <!-- Foto principal -->
         <q-img :src="vehicle.photos[0]" ratio="16/9" style="max-width: 50%">
           <template v-slot:default>
-            <q-badge color="primary" class="absolute-top-left q-ma-sm">
-              <span style="font-size: 14px; font-weight: 400; word-break: break-word"
-                ><span style="font-weight: 700; font-style: bold">Marca:</span> {{ vehicle.mark }} -
-                <span style="font-weight: 700; font-style: bold">Modelo:</span>
-                {{ vehicle.model }}</span
-              >
-            </q-badge>
+            <div class="vehicle-tag absolute-top-left q-ma-sm bg-primary text-white">
+              <span class="vehicle-text">
+                <strong>Marca:</strong> {{ vehicle.mark }}
+                <span class="separator"> - </span>
+                <strong>Modelo:</strong> {{ vehicle.model }}
+              </span>
+            </div>
           </template>
         </q-img>
         <!-- Miniaturas -->
@@ -197,5 +201,31 @@ function editVehicle(vehicle: Vehicle | null) {
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.vehicle-tag {
+  padding: 4px 8px;
+  border-radius: 6px;
+  max-width: 90%;
+}
+
+.vehicle-text {
+  font-size: 0.75rem;
+  font-weight: 400;
+  word-break: break-word;
+}
+
+.vehicle-text strong {
+  font-weight: 700;
+}
+
+.separator {
+  margin: 0 4px;
+}
+
+@media (max-width: 600px) {
+  .vehicle-text {
+    font-size: 0.65rem;
+  }
 }
 </style>
